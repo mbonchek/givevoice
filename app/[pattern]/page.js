@@ -214,7 +214,7 @@ export default function PatternHomePage({ params }) {
                 Voice of {`{${displayPattern}}`}
               </h2>
               <p className="text-gray-700 font-light leading-relaxed whitespace-pre-line" style={{ lineHeight: '1.8' }}>
-                {patternHistory.synthesis.analytical}
+                {patternHistory.synthesis.voice}
               </p>
             </div>
 

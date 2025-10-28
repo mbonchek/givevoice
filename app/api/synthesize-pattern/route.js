@@ -162,11 +162,11 @@ INVITATIONS:
       const nextVersion = versionResult.rows[0].next_version;
 
       // Store in the columns:
-      // - analytical = voice (text)
-      // - connections = connections (JSONB array of {title, phrase, description})
-      // - invitations = invitations (JSONB array of strings)
+      // - voice = the synthesized voice text
+      // - connections = array of connected patterns with phrases and descriptions
+      // - invitations = array of invitation questions
       await pool.query(
-        `INSERT INTO pattern_syntheses (pattern_name, analytical, connections, invitations, voicing_count, heart_count, version)
+        `INSERT INTO pattern_syntheses (pattern_name, voice, connections, invitations, voicing_count, heart_count, version)
          VALUES ($1, $2, $3, $4, $5, $6, $7)`,
         [pattern, voice, JSON.stringify(connections), JSON.stringify(invitations), voicings.length, hearts.length, nextVersion]
       );
