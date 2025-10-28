@@ -120,31 +120,30 @@ export default function Home() {
           </h3>
 
           {/* Top Patterns */}
-          <div className="mb-8 max-w-2xl mx-auto">
-            <h4 className="text-sm uppercase tracking-wide text-gray-600 font-normal mb-3">
-              Top Patterns
-            </h4>
-            <div className="space-y-1">
-              {[
-                { name: 'grandmother', count: 35 },
-                { name: 'mountain', count: 28 },
-                { name: 'anticipation', count: 22 },
-                { name: 'river', count: 18 },
-                { name: 'threshold', count: 15 }
-              ].map((pattern, idx) => (
-                <Link
-                  key={pattern.name}
-                  href={`/${pattern.name}`}
-                  className="block hover:bg-gray-50 -mx-2 px-2 py-1.5 rounded transition-colors"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-purple-600 font-normal">{`{${pattern.name}}`}</span>
-                    <span className="text-xs text-gray-400 font-light">{pattern.count} voicings</span>
-                  </div>
-                </Link>
-              ))}
+          {activityData?.trendingPatterns && activityData.trendingPatterns.length > 0 && (
+            <div className="mb-8 max-w-2xl mx-auto">
+              <h4 className="text-sm uppercase tracking-wide text-gray-600 font-normal mb-3">
+                Top Patterns
+              </h4>
+              <div className="space-y-1">
+                {activityData.trendingPatterns.slice(0, 5).map((pattern, idx) => {
+                  const urlPattern = pattern.pattern_name.replace(/\./g, '-');
+                  return (
+                    <Link
+                      key={pattern.pattern_name}
+                      href={`/${urlPattern}`}
+                      className="block hover:bg-gray-50 -mx-2 px-2 py-1.5 rounded transition-colors"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-purple-600 font-normal">{`{${pattern.pattern_name}}`}</span>
+                        <span className="text-xs text-gray-400 font-light">{pattern.exploration_count} voicings</span>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Divider */}
           <div className="border-t border-gray-200 my-6 max-w-2xl mx-auto"></div>
