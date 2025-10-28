@@ -26,13 +26,6 @@ export default function PatternHomePage({ params }) {
         const data = await response.json();
         setPatternHistory(data);
 
-        // Auto-redirect to /new if this pattern has no voicings
-        if (!data.history || data.history.length === 0) {
-          const urlPattern = patternName.replace(/\./g, '-');
-          window.location.href = `/${urlPattern}/new`;
-          return;
-        }
-
         // Auto-generate synthesis every 5 voicings (disabled for now)
         // const totalVoicings = data.stats?.totalVoicings || 0;
         // const lastSynthesisCount = data.synthesis?.voicing_count || 0;
