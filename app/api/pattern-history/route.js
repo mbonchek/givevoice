@@ -64,7 +64,7 @@ export async function GET(request) {
 
     // Get latest synthesis for this pattern
     const synthesis = await db.query(`
-      SELECT analytical, intuitive, synthesis, created_at, voicing_count, heart_count, version
+      SELECT voice, connections, invitations, created_at, voicing_count, heart_count, version
       FROM pattern_syntheses
       WHERE pattern_name = $1
       ORDER BY created_at DESC
@@ -93,17 +93,17 @@ export async function GET(request) {
     // Parse synthesis JSONB fields if they exist
     let synthesisData = synthesis.rows[0] || null;
     if (synthesisData) {
-      // Ensure intuitive and synthesis fields are parsed if they're JSON strings
-      if (typeof synthesisData.intuitive === 'string') {
+      // Ensure connections and invitations fields are parsed if they're JSON strings
+      if (typeof synthesisData.connections === 'string') {
         try {
-          synthesisData.intuitive = JSON.parse(synthesisData.intuitive);
+          synthesisData.connections = JSON.parse(synthesisData.connections);
         } catch (e) {
           // Keep as string if it's not valid JSON (old format)
         }
       }
-      if (typeof synthesisData.synthesis === 'string') {
+      if (typeof synthesisData.invitations === 'string') {
         try {
-          synthesisData.synthesis = JSON.parse(synthesisData.synthesis);
+          synthesisData.invitations = JSON.parse(synthesisData.invitations);
         } catch (e) {
           // Keep as string if it's not valid JSON (old format)
         }
