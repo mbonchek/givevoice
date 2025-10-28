@@ -64,58 +64,10 @@ What wants to be said?`
     // Remove any leading asterisked expressions before the actual voicing begins
     voiceText = voiceText.replace(/^\*[^*]+\*\s*/s, '').trim();
 
-    // Generate resonances
+    // Generate resonances and questions will be done by the client after initial voicing is saved
+    // This prevents timeouts on Vercel's serverless functions
     let resonances = [];
-    try {
-      const resonanceResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001'}/api/resonance`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pattern, voicing: voiceText })
-      });
-
-      if (!resonanceResponse.ok) {
-        console.error('Resonance API error:', resonanceResponse.status);
-        throw new Error('Resonance API failed');
-      }
-
-      const resonanceData = await resonanceResponse.json();
-
-      // Parse resonances into structured format
-      const resonancesText = resonanceData.resonances || '';
-      const lines = resonancesText.split('\n').filter(line => line.trim());
-      resonances = lines.map(line => {
-        // Try new format: - pattern.name resonated with "phrase" — because [explanation]
-        // Also try with **pattern.name** format
-        const newMatch = line.match(/^[•\-*]\s*\*{0,2}([^\s*]+)\*{0,2}\s+resonated with\s+"([^"]+)"\s+—\s+because\s+(.+)$/i);
-        if (newMatch) {
-          return {
-            title: newMatch[1].trim(),
-            phrase: newMatch[2],
-            description: newMatch[3]
-          };
-        }
-
-        // Try old format: **pattern**: description
-        const oldMatch = line.match(/^[•\-*]\s*\*\*(.+?)\*\*:\s*(.+)$/);
-        if (oldMatch) {
-          return { title: oldMatch[1], description: oldMatch[2] };
-        }
-
-        return null;
-      }).filter(Boolean);
-    } catch (resonanceError) {
-      console.error('Failed to generate resonances:', resonanceError);
-      // Continue without resonances
-    }
-
-    // Generate sample questions
-    const questionsResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001'}/api/sample-questions`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ pattern, voicing: voiceText })
-    });
-    const questionsData = await questionsResponse.json();
-    const sampleQuestions = questionsData.questions || [];
+    let sampleQuestions = [];
 
     // Save to database with resonances and sample questions
     const db = getPool();
