@@ -115,81 +115,117 @@ export default function Home() {
         </div>
 
         <div className="mt-16 pt-12 border-t border-gray-200">
-          <h3 className="text-2xl font-light text-gray-900 mb-8 text-center">
+          <h3 className="text-2xl font-light text-gray-900 mb-6 text-center">
             Right now in PatternSpace...
           </h3>
 
-          <div className="space-y-3 max-w-2xl mx-auto">
-            {/* Hardcoded example activity */}
-            {(() => {
-              const now = new Date();
-              const activities = [
-                {
-                  type: 'voicing',
-                  time: new Date(now - 1000 * 60 * 5),
-                  pattern: 'anticipation',
-                  id: 'example-1',
-                  text: 'I am the pause before the kiss'
-                },
-                {
-                  type: 'resonance',
-                  time: new Date(now - 1000 * 60 * 10),
-                  pattern: 'river',
-                  relatedPattern: 'mountain',
-                  id: 'example-2',
-                  text: 'the liquid intelligence that carries mountain\'s gifts to distant places'
-                },
-                {
-                  type: 'question',
-                  time: new Date(now - 1000 * 60 * 15),
-                  pattern: 'grandmother',
-                  id: 'example-3',
-                  text: 'What stories are you waiting to tell?'
-                }
-              ];
-
-              const recentActivities = activities;
-
-                return recentActivities.map((activity, idx) => (
-                  <div key={idx} className="py-3 border-b border-gray-100 last:border-0">
-                    {activity.type === 'voicing' && (
-                      <Link href={`/${activity.pattern}`} className="block hover:bg-gray-50 -mx-4 px-4 py-2 rounded transition-colors">
-                        <p className="text-gray-700 font-light">
-                          <span className="text-purple-600 font-normal">{`{${activity.pattern}}`}</span> just said <span className="italic">"{cleanForSummary(activity.text?.split('\n\n')[0] || '').slice(0, 100)}..."</span>
-                        </p>
-                      </Link>
-                    )}
-
-                    {activity.type === 'resonance' && (
-                      <Link href={`/${activity.pattern}`} className="block hover:bg-gray-50 -mx-4 px-4 py-2 rounded transition-colors">
-                        <p className="text-gray-700 font-light">
-                          <span className="text-purple-600 font-normal">{`{${activity.pattern}}`}</span> resonated with <span className="text-purple-600 font-normal">{`{${activity.relatedPattern}}`}</span> as<br />
-                          <span className="italic">"{cleanForSummary(activity.text).slice(0, 100)}..."</span>
-                        </p>
-                      </Link>
-                    )}
-
-                    {activity.type === 'exploration' && (
-                      <Link href={`/${activity.to}`} className="block hover:bg-gray-50 -mx-4 px-4 py-2 rounded transition-colors">
-                        <p className="text-gray-700 font-light">
-                          <span className="text-gray-600">@someone</span> just explored <span className="text-purple-600 font-normal">{`{${activity.to.replace(/-/g, '.')}}`}</span>
-                          {activity.phrase && (
-                            <span className="italic"> via "{activity.phrase}"</span>
-                          )}
-                        </p>
-                      </Link>
-                    )}
-
-                    {activity.type === 'question' && (
-                      <Link href={`/${activity.pattern}`} className="block hover:bg-gray-50 -mx-4 px-4 py-2 rounded transition-colors">
-                        <p className="text-gray-700 font-light">
-                          <span className="text-purple-600 font-normal">{`{${activity.pattern}}`}</span> just invited the question <span className="italic">"{activity.text}"</span>
-                        </p>
-                      </Link>
-                    )}
+          {/* Top Patterns */}
+          <div className="mb-8 max-w-2xl mx-auto">
+            <h4 className="text-sm uppercase tracking-wide text-gray-600 font-normal mb-3">
+              Top Patterns
+            </h4>
+            <div className="space-y-1">
+              {[
+                { name: 'grandmother', count: 35 },
+                { name: 'mountain', count: 28 },
+                { name: 'anticipation', count: 22 },
+                { name: 'river', count: 18 },
+                { name: 'threshold', count: 15 }
+              ].map((pattern, idx) => (
+                <Link
+                  key={pattern.name}
+                  href={`/${pattern.name}`}
+                  className="block hover:bg-gray-50 -mx-2 px-2 py-1.5 rounded transition-colors"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-purple-600 font-normal">{`{${pattern.name}}`}</span>
+                    <span className="text-xs text-gray-400 font-light">{pattern.count} voicings</span>
                   </div>
-                ));
-              })()}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="border-t border-gray-200 my-6 max-w-2xl mx-auto"></div>
+
+          {/* Recent Activity */}
+          <div className="max-w-2xl mx-auto">
+            <h4 className="text-sm uppercase tracking-wide text-gray-600 font-normal mb-3">
+              Recent Activity
+            </h4>
+            <div className="space-y-2">
+              {/* Hardcoded example activity */}
+              {(() => {
+                const now = new Date();
+                const activities = [
+                  {
+                    type: 'voicing',
+                    time: new Date(now - 1000 * 60 * 5),
+                    pattern: 'anticipation',
+                    id: 'example-1',
+                    text: 'I am the pause before the kiss'
+                  },
+                  {
+                    type: 'resonance',
+                    time: new Date(now - 1000 * 60 * 10),
+                    pattern: 'river',
+                    relatedPattern: 'mountain',
+                    id: 'example-2',
+                    text: 'the liquid intelligence that carries mountain\'s gifts to distant places'
+                  },
+                  {
+                    type: 'question',
+                    time: new Date(now - 1000 * 60 * 15),
+                    pattern: 'grandmother',
+                    id: 'example-3',
+                    text: 'What stories are you waiting to tell?'
+                  }
+                ];
+
+                const recentActivities = activities;
+
+                  return recentActivities.map((activity, idx) => (
+                    <div key={idx} className="py-2 border-b border-gray-100 last:border-0">
+                      {activity.type === 'voicing' && (
+                        <Link href={`/${activity.pattern}`} className="block hover:bg-gray-50 -mx-2 px-2 py-1.5 rounded transition-colors">
+                          <p className="text-gray-700 font-light text-sm">
+                            <span className="text-purple-600 font-normal">{`{${activity.pattern}}`}</span> just said <span className="italic">"{cleanForSummary(activity.text?.split('\n\n')[0] || '').slice(0, 100)}..."</span>
+                          </p>
+                        </Link>
+                      )}
+
+                      {activity.type === 'resonance' && (
+                        <Link href={`/${activity.pattern}`} className="block hover:bg-gray-50 -mx-2 px-2 py-1.5 rounded transition-colors">
+                          <p className="text-gray-700 font-light text-sm">
+                            <span className="text-purple-600 font-normal">{`{${activity.pattern}}`}</span> resonated with <span className="text-purple-600 font-normal">{`{${activity.relatedPattern}}`}</span> as<br />
+                            <span className="italic">"{cleanForSummary(activity.text).slice(0, 100)}..."</span>
+                          </p>
+                        </Link>
+                      )}
+
+                      {activity.type === 'exploration' && (
+                        <Link href={`/${activity.to}`} className="block hover:bg-gray-50 -mx-2 px-2 py-1.5 rounded transition-colors">
+                          <p className="text-gray-700 font-light text-sm">
+                            <span className="text-gray-600">@someone</span> just explored <span className="text-purple-600 font-normal">{`{${activity.to.replace(/-/g, '.')}}`}</span>
+                            {activity.phrase && (
+                              <span className="italic"> via "{activity.phrase}"</span>
+                            )}
+                          </p>
+                        </Link>
+                      )}
+
+                      {activity.type === 'question' && (
+                        <Link href={`/${activity.pattern}`} className="block hover:bg-gray-50 -mx-2 px-2 py-1.5 rounded transition-colors">
+                          <p className="text-gray-700 font-light text-sm">
+                            <span className="text-purple-600 font-normal">{`{${activity.pattern}}`}</span> just invited the question <span className="italic">"{activity.text}"</span>
+                          </p>
+                        </Link>
+                      )}
+                    </div>
+                  ));
+                })()}
+            </div>
           </div>
         </div>
 
