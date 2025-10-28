@@ -50,6 +50,7 @@ export async function GET(request) {
       )
       SELECT
         v.pattern_name,
+        COUNT(DISTINCT v.id) as voicing_count,
         COUNT(DISTINCT ph.id) as heart_count,
         COUNT(DISTINCT pe.id) as exploration_count,
         COUNT(DISTINCT ph.id) + COUNT(DISTINCT pe.id) as total_engagement,
@@ -85,6 +86,18 @@ export async function GET(request) {
       LIMIT 10
     `);
 
+    // Get latest patterns (most recently voiced)
+    const latestPatterns = await db.query(`
+      SELECT
+        v.pattern_name,
+        COUNT(DISTINCT v.id) as voicing_count,
+        MAX(v.created_at) as last_voicing
+      FROM voicings v
+      GROUP BY v.pattern_name
+      ORDER BY last_voicing DESC
+      LIMIT 3
+    `);
+
     // Get recent hearts with context
     const recentHearts = await db.query(`
       SELECT
@@ -116,6 +129,7 @@ export async function GET(request) {
     return NextResponse.json({
       recentVoicings: recentVoicings.rows,
       trendingPatterns: trendingPatterns.rows,
+      latestPatterns: latestPatterns.rows,
       recentHearts: recentHearts.rows,
       recentExplorations: recentExplorations.rows
     });
