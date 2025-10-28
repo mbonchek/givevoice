@@ -175,6 +175,15 @@ export default function PatternPage({ params }) {
       });
 
       const genData = await genResponse.json();
+
+      // Check for errors
+      if (genData.error || !genData.voicing) {
+        console.error('Generation failed:', genData.error || 'No voicing returned');
+        setIsLoading(false);
+        alert('Failed to generate voicing. Please try again.');
+        return;
+      }
+
       const freshVoicing = genData.voicing;
 
       setNewVoicing(freshVoicing);
