@@ -161,12 +161,12 @@ INVITATIONS:
       );
       const nextVersion = versionResult.rows[0].next_version;
 
-      // Store in the existing columns:
+      // Store in the columns:
       // - analytical = voice (text)
-      // - intuitive = connections (JSONB array of {title, phrase, description})
-      // - synthesis = invitations (JSONB array of strings)
+      // - connections = connections (JSONB array of {title, phrase, description})
+      // - invitations = invitations (JSONB array of strings)
       await pool.query(
-        `INSERT INTO pattern_syntheses (pattern_name, analytical, intuitive, synthesis, voicing_count, heart_count, version)
+        `INSERT INTO pattern_syntheses (pattern_name, analytical, connections, invitations, voicing_count, heart_count, version)
          VALUES ($1, $2, $3, $4, $5, $6, $7)`,
         [pattern, voice, JSON.stringify(connections), JSON.stringify(invitations), voicings.length, hearts.length, nextVersion]
       );

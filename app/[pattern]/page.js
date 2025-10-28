@@ -226,7 +226,7 @@ export default function PatternHomePage({ params }) {
               <div className="space-y-4">
                 {(() => {
                   // Handle both old format (string with |) and new format (array of objects)
-                  const connectionsData = patternHistory.synthesis.intuitive;
+                  const connectionsData = patternHistory.synthesis.connections;
 
                   if (Array.isArray(connectionsData)) {
                     // New format: array of {title, phrase, description}
@@ -283,7 +283,7 @@ export default function PatternHomePage({ params }) {
               <div className="space-y-4">
                 {(() => {
                   // Handle both old format (string with newlines) and new format (array of strings)
-                  const invitationsData = patternHistory.synthesis.synthesis;
+                  const invitationsData = patternHistory.synthesis.invitations;
 
                   let questionsList = [];
                   if (Array.isArray(invitationsData)) {
