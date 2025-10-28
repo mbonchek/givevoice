@@ -420,7 +420,7 @@ export default function PatternHomePage({ params }) {
         ) : null}
 
         {/* Voicings */}
-        {patternHistory && patternHistory.history && patternHistory.history.length > 0 && (
+        {patternHistory && patternHistory.history && patternHistory.history.length > 0 ? (
           <section className="mt-20">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-2xl font-light text-gray-900">
@@ -513,7 +513,19 @@ export default function PatternHomePage({ params }) {
               </div>
             )}
           </section>
-        )}
+        ) : patternHistory ? (
+          <section className="mt-20 text-center">
+            <p className="text-gray-600 font-light mb-6">
+              This pattern hasn't been voiced yet. Be the first to give it voice.
+            </p>
+            <Link
+              href={`/${urlPath}/new`}
+              className="inline-block px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-full transition-colors font-light"
+            >
+              Generate First Voicing
+            </Link>
+          </section>
+        ) : null}
 
         {/* Stats */}
         {patternHistory && patternHistory.stats && (
